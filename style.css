@@ -444,6 +444,7 @@ a.contract_inactive {color: gray; text-decoration: line-through}
 
 .qtip-wide {
     width: 500px;
+    overflow: hidden;
 }
 
 
