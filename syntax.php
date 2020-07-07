@@ -104,7 +104,7 @@ class syntax_plugin_inventory extends DokuWiki_Syntax_Plugin
 		$api=$this->getConf('inventory_url');
 		switch ($controller) {
 			case 'service':
-				return $this->fetchInventoryPage($api.'/'.$controller.'/'.$method.'?id='.$id);
+				return $this->fetchInventoryPage($api.'/services/'.$method.'?id='.$id);
 				break;
 			default:
 				return 'ОШИБКА: неизвестный тип объекта';
