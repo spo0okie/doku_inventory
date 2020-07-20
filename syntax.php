@@ -121,9 +121,9 @@ class syntax_plugin_inventory extends DokuWiki_Syntax_Plugin
 				if (is_numeric($id)) {
 					return $this->fetchInventoryPage($api.'/users/item?id='.$id);
 				} elseif (strpos($id,'')===false) {
-					return $this->fetchInventoryPage($api.'/users/item?login='.$id);
+					return $this->fetchInventoryPage($api.'/users/item-by-login?login='.$id);
 				} else {
-					return $this->fetchInventoryPage($api.'/users/item?name='.$id);
+					return $this->fetchInventoryPage($api.'/users/item-by-name?name='.$id);
 				}
 				break;
 
@@ -132,7 +132,7 @@ class syntax_plugin_inventory extends DokuWiki_Syntax_Plugin
 				if (is_numeric($id)) {
 					return $this->fetchInventoryPage($api.'/comps/item?id='.$id);
 				} else {
-					return $this->fetchInventoryPage($api.'/comps/item?name='.$id);
+					return $this->fetchInventoryPage($api.'/comps/item-by-name?name='.$id);
 				}
 				break;
 
