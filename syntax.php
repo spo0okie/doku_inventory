@@ -100,10 +100,15 @@ class syntax_plugin_inventory extends DokuWiki_Syntax_Plugin
     	//return 'inventory';
 		$controller=$data[0];
 		$id=$data[1];
-		$method=isset($data[2])?('card-'.$data[2]):'card';
+		$method=isset($data[2])?($data[2]):'item';
 		$api=$this->getConf('inventory_url');
 		switch ($controller) {
 			case 'service':
+				switch ($method) {
+					case 'support': $method='card-method';
+						break;
+					default: return 'ОШИБКА: Неизвестный запрос к сервису';
+				}
 				return $this->fetchInventoryPage($api.'/services/'.$method.'?id='.$id);
 				break;
 			default:
@@ -125,7 +130,7 @@ class syntax_plugin_inventory extends DokuWiki_Syntax_Plugin
         if ($mode !== 'xhtml') {
             return false;
         }
-		$renderer->doc .= '<div>';
+		//$renderer->doc .= '<div>';
 
 		if (!mb_strlen($data)) {
 			$renderer->doc .= 'ОШИБКА: Пустая ссылка на инвентаризацию';
@@ -139,7 +144,7 @@ class syntax_plugin_inventory extends DokuWiki_Syntax_Plugin
 			}
 		}
 
-		$renderer->doc .= '</div>';
+		//$renderer->doc .= '</div>';
         return true;
     }
 }
