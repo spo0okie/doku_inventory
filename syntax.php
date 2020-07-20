@@ -102,14 +102,29 @@ class syntax_plugin_inventory extends DokuWiki_Syntax_Plugin
 		$id=$data[1];
 		$method=isset($data[2])?($data[2]):'item';
 		$api=$this->getConf('inventory_url');
+
 		switch ($controller) {
+
 			case 'service':
 				switch ($method) {
-					case 'support': $method='card-method';
+					case 'support':
+						return $this->fetchInventoryPage($api.'/services/card-support?id='.$id);
+						break;
+					case 'item':
+						return $this->fetchInventoryPage($api.'/services/'.$method.'?id='.$id);
 						break;
 					default: return 'ОШИБКА: Неизвестный запрос к сервису';
 				}
-				return $this->fetchInventoryPage($api.'/services/'.$method.'?id='.$id);
+				break;
+
+			case 'user':
+				if (is_numeric($id)) {
+					return $this->fetchInventoryPage($api.'/users/item?id='.$id);
+				} elseif (strpos($id,'')===false) {
+					return $this->fetchInventoryPage($api.'/users/item?login='.$id);
+				} else {
+					return $this->fetchInventoryPage($api.'/users/item?name='.$id);
+				}
 				break;
 			default:
 				return 'ОШИБКА: неизвестный тип объекта';
