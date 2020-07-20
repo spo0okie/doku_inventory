@@ -126,6 +126,16 @@ class syntax_plugin_inventory extends DokuWiki_Syntax_Plugin
 					return $this->fetchInventoryPage($api.'/users/item?name='.$id);
 				}
 				break;
+
+			case 'comp':
+			case 'os':
+				if (is_numeric($id)) {
+					return $this->fetchInventoryPage($api.'/comps/item?id='.$id);
+				} else {
+					return $this->fetchInventoryPage($api.'/comps/item?name='.$id);
+				}
+				break;
+
 			default:
 				return 'ОШИБКА: неизвестный тип объекта';
 		}
