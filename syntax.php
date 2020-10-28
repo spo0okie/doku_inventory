@@ -63,6 +63,9 @@ class syntax_plugin_inventory extends DokuWiki_Syntax_Plugin
         return $data;
     }
 
+	/**
+	 * Разбирается с каким кодом вернулась страничка с запроса
+	 */
     private static function parseHeaders( $headers )
 	{
 		//упер отсель https://www.php.net/manual/ru/reserved.variables.httpresponseheader.php
@@ -93,9 +96,15 @@ class syntax_plugin_inventory extends DokuWiki_Syntax_Plugin
 			return $page;
 		}
 
-		return 'ОШИБКА: сервис не найден в инвентаризации: '.$response['response_code']; //.$url;
+		return 'ОШИБКА: объект не найден в инвентаризации: '.$response['response_code']; //.$url;
 	}
 
+    /**
+     * Сюда передаем распарсенные данные из синтаксиса
+     * отвечаем уже отрендеренными HTML данными
+     * @param $data
+     * @return false|string|string[]
+     */
     private function fetchInventory($data) {
     	//return 'inventory';
 		$controller=$data[0];
@@ -106,14 +115,19 @@ class syntax_plugin_inventory extends DokuWiki_Syntax_Plugin
 		switch ($controller) {
 
 			case 'service':
+                /**
+                 * Запрошен сервис
+                 */
 				switch ($method) {
-					case 'support':
+                    case 'support':
+					    //{{inventory:service:11:support}}
 						return $this->fetchInventoryPage($api.'/services/card-support?id='.$id);
 						break;
 					case 'item':
+						if (empty($id)) return '<a href="'.$api.'/services/">Укажите номер сервиса в инвентаризации</a>' ;
 						return $this->fetchInventoryPage($api.'/services/'.$method.'?id='.$id);
 						break;
-					default: return 'ОШИБКА: Неизвестный запрос к сервису';
+					default: return 'ОШИБКА: Неизвестный элемент сервиса';
 				}
 				break;
 
@@ -133,6 +147,17 @@ class syntax_plugin_inventory extends DokuWiki_Syntax_Plugin
 					return $this->fetchInventoryPage($api.'/comps/item?id='.$id);
 				} else {
 					return $this->fetchInventoryPage($api.'/comps/item-by-name?name='.$id);
+				}
+				break;
+
+			case 'tech_model':
+				if (is_numeric($id)) {
+					return $this->fetchInventoryPage($api.'/tech-models/item?id='.$id.'&long=1');
+				} else {
+					$tokens=explode('/',$id);
+					if (count($tokens)!=2) return 'ОШИБКА: не удалось определить производителя/модель';
+					
+					return $this->fetchInventoryPage($api.'/tech-models/item-by-name?name='.urlencode($tokens[1]).'&manufacturer='.urlencode($tokens[0]).'&long=1');
 				}
 				break;
 
