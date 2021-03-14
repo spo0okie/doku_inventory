@@ -190,7 +190,7 @@ class syntax_plugin_inventory extends DokuWiki_Syntax_Plugin
 		} else {
 		    //если есть кусок после | то имя выводимого объекта надо заменить на это
 		    if (strpos($data,'|')) {
-		        $name_replacement=substr($data,strpos($data,'|'));
+		        $name_replacement=substr($data,strpos($data,'|')+1);
 		        $data=substr($data,0,strpos($data,'|'));
             } else {
 		        $name_replacement=null;
