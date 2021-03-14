@@ -191,14 +191,14 @@ class syntax_plugin_inventory extends DokuWiki_Syntax_Plugin
 		    //если есть кусок после | то имя выводимого объекта надо заменить на это
 		    if (strpos($data,'|')) {
 		        $name_replacement=substr($data,strpos($data,'|'));
-		        $data=substr($data,0,strpos($data,'|')-1);
+		        $data=substr($data,0,strpos($data,'|'));
             } else {
 		        $name_replacement=null;
             }
 			$tokens=explode(':',$data);
 			if (count($tokens)==2 || count($tokens)==3) {
 				//$renderer->doc .= 'kорректная ссылка на инвентаризацию';
-				$renderer->doc .= $this->fetchInventory($tokens);
+				$renderer->doc .= $this->fetchInventory($tokens,$name_replacement);
 			} else {
 				$renderer->doc .= 'ОШИБКА: Некорректная ссылка на инвентаризацию';
 			}
