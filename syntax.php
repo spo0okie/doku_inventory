@@ -85,7 +85,7 @@ class syntax_plugin_inventory extends DokuWiki_Syntax_Plugin
 		return $head;
 	}
 
-	private function fetchInventoryPage ($url)
+	private function fetchInventoryPage ($url,$name_replacement=null)
 	{
 		$api=$this->getConf('inventory_url');
 		$page=@file_get_contents($url);
@@ -93,6 +93,9 @@ class syntax_plugin_inventory extends DokuWiki_Syntax_Plugin
 		if (isset($response['response_code'])&&($response['response_code']=='200')) {
 			$page=str_replace('href="/web','href="'.$api,$page);
 			$page=str_replace('qtip_ajxhrf="/web','qtip_ajxhrf="'.$api,$page);
+			if (!empty($name_replacement)) {
+                $page=preg_replace('/<a(.+)>.+<\/a>/',"<a {1}>$name_replacement</a>",$page,1);
+            }
 			return $page;
 		}
 
@@ -105,7 +108,7 @@ class syntax_plugin_inventory extends DokuWiki_Syntax_Plugin
      * @param $data
      * @return false|string|string[]
      */
-    private function fetchInventory($data) {
+    private function fetchInventory($data,$name_replacement=null) {
     	//return 'inventory';
 		$controller=$data[0];
 		$id=$data[1];
@@ -125,7 +128,7 @@ class syntax_plugin_inventory extends DokuWiki_Syntax_Plugin
 						break;
 					case 'item':
 						if (empty($id)) return '<a href="'.$api.'/services/">Укажите номер сервиса в инвентаризации</a>' ;
-						return $this->fetchInventoryPage($api.'/services/'.$method.'?id='.$id);
+						return $this->fetchInventoryPage($api.'/services/'.$method.'?id='.$id,$name_replacement);
 						break;
 					default: return 'ОШИБКА: Неизвестный элемент сервиса';
 				}
@@ -133,31 +136,31 @@ class syntax_plugin_inventory extends DokuWiki_Syntax_Plugin
 
 			case 'user':
 				if (is_numeric($id)) {
-					return $this->fetchInventoryPage($api.'/users/item?id='.$id);
+					return $this->fetchInventoryPage($api.'/users/item?id='.$id,$name_replacement);
 				} elseif (strpos($id,'')===false) {
-					return $this->fetchInventoryPage($api.'/users/item-by-login?login='.$id);
+					return $this->fetchInventoryPage($api.'/users/item-by-login?login='.$id,$name_replacement);
 				} else {
-					return $this->fetchInventoryPage($api.'/users/item-by-name?name='.$id);
+					return $this->fetchInventoryPage($api.'/users/item-by-name?name='.$id,$name_replacement);
 				}
 				break;
 
 			case 'comp':
 			case 'os':
 				if (is_numeric($id)) {
-					return $this->fetchInventoryPage($api.'/comps/item?id='.$id);
+					return $this->fetchInventoryPage($api.'/comps/item?id='.$id,$name_replacement);
 				} else {
-					return $this->fetchInventoryPage($api.'/comps/item-by-name?name='.$id);
+					return $this->fetchInventoryPage($api.'/comps/item-by-name?name='.$id,$name_replacement);
 				}
 				break;
 
 			case 'tech_model':
 				if (is_numeric($id)) {
-					return $this->fetchInventoryPage($api.'/tech-models/item?id='.$id.'&long=1');
+					return $this->fetchInventoryPage($api.'/tech-models/item?id='.$id.'&long=1',$name_replacement);
 				} else {
 					$tokens=explode('/',$id);
 					if (count($tokens)!=2) return 'ОШИБКА: не удалось определить производителя/модель';
 					
-					return $this->fetchInventoryPage($api.'/tech-models/item-by-name?name='.urlencode($tokens[1]).'&manufacturer='.urlencode($tokens[0]).'&long=1');
+					return $this->fetchInventoryPage($api.'/tech-models/item-by-name?name='.urlencode($tokens[1]).'&manufacturer='.urlencode($tokens[0]).'&long=1',$name_replacement);
 				}
 				break;
 
@@ -185,6 +188,13 @@ class syntax_plugin_inventory extends DokuWiki_Syntax_Plugin
 		if (!mb_strlen($data)) {
 			$renderer->doc .= 'ОШИБКА: Пустая ссылка на инвентаризацию';
 		} else {
+		    //если есть кусок после | то имя выводимого объекта надо заменить на это
+		    if (strpos($data,'|')) {
+		        $name_replacement=substr($data,strpos($data,'|'));
+		        $data=substr($data,0,strpos($data,'|')-1);
+            } else {
+		        $name_replacement=null;
+            }
 			$tokens=explode(':',$data);
 			if (count($tokens)==2 || count($tokens)==3) {
 				//$renderer->doc .= 'kорректная ссылка на инвентаризацию';
