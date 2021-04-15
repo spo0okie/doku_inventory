@@ -25,12 +25,14 @@ function attach_qTip(el){
     } else {
         $load=undefined;
     }
+    margin=window.getComputedStyle(document.body).marginTop;
+    margin=margin.slice(0,margin.length-2);
     el.tooltipster({
         animationDuration: 100,
         content: $text,
         contentAsHTML: true,
         delay: 50,
-        distance: -$(body).css('margin-top'),
+        distance: -margin,
         interactive: true,
         theme: 'tooltipster-shadow tooltipster-shadow-yellow',
         updateAnimation: 'fade',
