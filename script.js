@@ -30,6 +30,7 @@ function attach_qTip(el){
         content: $text,
         contentAsHTML: true,
         delay: 50,
+        distance: -$(body).css('margin-top'),
         interactive: true,
         theme: 'tooltipster-shadow tooltipster-shadow-yellow',
         updateAnimation: 'fade',
