@@ -168,10 +168,7 @@ class syntax_plugin_inventory extends DokuWiki_Syntax_Plugin
 				if (is_numeric($id)) {
 					return $this->fetchInventoryPage($api.'/techs/item?id='.$id,$name_replacement);
 				} else {
-					$tokens=explode('/',$id);
-					if (count($tokens)!=2) return 'ОШИБКА: не удалось определить инв.номер оборудования';
-
-					return $this->fetchInventoryPage($api.'/techs/item-by-name?name='.urlencode($tokens[0]),$name_replacement);
+					return $this->fetchInventoryPage($api.'/techs/item-by-name?name='.urlencode($id),$name_replacement);
 				}
 				break;
 
