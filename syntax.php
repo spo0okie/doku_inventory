@@ -159,8 +159,19 @@ class syntax_plugin_inventory extends DokuWiki_Syntax_Plugin
 				} else {
 					$tokens=explode('/',$id);
 					if (count($tokens)!=2) return 'ОШИБКА: не удалось определить производителя/модель';
-					
+
 					return $this->fetchInventoryPage($api.'/tech-models/item-by-name?name='.urlencode($tokens[1]).'&manufacturer='.urlencode($tokens[0]).'&long=1',$name_replacement);
+				}
+				break;
+
+			case 'tech':
+				if (is_numeric($id)) {
+					return $this->fetchInventoryPage($api.'/techs/item?id='.$id,$name_replacement);
+				} else {
+					$tokens=explode('/',$id);
+					if (count($tokens)!=2) return 'ОШИБКА: не удалось определить инв.номер оборудования';
+
+					return $this->fetchInventoryPage($api.'/techs/item-by-name?name='.urlencode($tokens[0]),$name_replacement);
 				}
 				break;
 
