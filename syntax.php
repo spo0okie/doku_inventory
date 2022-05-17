@@ -137,10 +137,10 @@ class syntax_plugin_inventory extends DokuWiki_Syntax_Plugin
 			case 'user':
 				if (is_numeric($id)) {
 					return $this->fetchInventoryPage($api.'/users/item?id='.$id,$name_replacement);
-				} elseif (strpos($id,'')===false) {
+				} elseif (strpos($id,' ')===false) {
 					return $this->fetchInventoryPage($api.'/users/item-by-login?login='.$id,$name_replacement);
 				} else {
-					return $this->fetchInventoryPage($api.'/users/item-by-name?name='.$id,$name_replacement);
+					return $this->fetchInventoryPage($api.'/users/item-by-name?name='.urlencode($id),$name_replacement);
 				}
 				break;
 
