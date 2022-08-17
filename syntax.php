@@ -172,7 +172,11 @@ class syntax_plugin_inventory extends DokuWiki_Syntax_Plugin
 				}
 				break;
 
-            case 'org-phones':
+			case 'ip':
+				return $this->fetchInventoryPage($api.'/ip/item-by-name?name='.urlencode($id),$name_replacement);
+				break;
+
+			case 'org-phones':
                 if (is_numeric($id)) {
                     return $this->fetchInventoryPage($api.'/'.$controller.'/item?id='.$id,$name_replacement);
                 } return 'Поддерживается ссылка только через ID';
