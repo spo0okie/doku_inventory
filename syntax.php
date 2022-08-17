@@ -85,7 +85,7 @@ class syntax_plugin_inventory extends DokuWiki_Syntax_Plugin
 		return $head;
 	}
 
-	private function fetchInventoryPage ($url,$name_replacement=null)
+	private function fetchInventoryPage ($url,$name_replacement=null,$not_found_text=null)
 	{
 		$api=$this->getConf('inventory_url');
 		$page=@file_get_contents($url);
@@ -99,7 +99,9 @@ class syntax_plugin_inventory extends DokuWiki_Syntax_Plugin
 			return $page;
 		}
 
-		return 'ОШИБКА: объект не найден в инвентаризации: '.$response['response_code']; //.$url;
+		return is_null($not_found_text)?
+			'ОШИБКА: объект не найден в инвентаризации: '.$response['response_code']:
+			$not_found_text; //.$url;
 	}
 
     /**
@@ -173,7 +175,7 @@ class syntax_plugin_inventory extends DokuWiki_Syntax_Plugin
 				break;
 
 			case 'ip':
-				return $this->fetchInventoryPage($api.'/ip/item-by-name?name='.urlencode($id),$name_replacement);
+				return $this->fetchInventoryPage($api.'/ip/item-by-name?name='.urlencode($id),$name_replacement,$id);
 				break;
 
 			case 'org-phones':
