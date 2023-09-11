@@ -1,5 +1,6 @@
 /* DOKUWIKI:include tooltipster.main.min.js */
 /* DOKUWIKI:include tooltipster.bundle.min.js */
+/* DOKUWIKI:include fontawesome.min.js */
 
 function attach_qTip(el){
     if (el.hasClass('tooltipstered')) return;
