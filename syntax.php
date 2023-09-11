@@ -94,7 +94,7 @@ class syntax_plugin_inventory extends DokuWiki_Syntax_Plugin
 			$page=str_replace('href="/web','href="'.$api,$page);
 			$page=str_replace('qtip_ajxhrf="/web','qtip_ajxhrf="'.$api,$page);
 			if (!empty($name_replacement)) {
-                $page=preg_replace('/<a(.+)>.+<\/a>/',"<a {1}>$name_replacement</a>",$page,1);
+                $page=preg_replace('/<span class=\'item-name\'>.+<\/span>/',$name_replacement,$page,1);
             }
 			return $page;
 		}
@@ -118,6 +118,30 @@ class syntax_plugin_inventory extends DokuWiki_Syntax_Plugin
 		$api=$this->getConf('inventory_url');
 
 		switch ($controller) {
+			case 'comp':
+			case 'os':
+				if (is_numeric($id)) {
+					return $this->fetchInventoryPage($api.'/comps/item?id='.$id,$name_replacement);
+				} else {
+					return $this->fetchInventoryPage($api.'/comps/item-by-name?name='.$id,$name_replacement);
+				}
+				break;
+
+			case 'ip':
+				return $this->fetchInventoryPage($api.'/ip/item-by-name?name='.urlencode($id),$name_replacement,$id);
+				break;
+
+			case 'net':
+			case 'network':
+				return $this->fetchInventoryPage($api.'/networks/item-by-name?name='.urlencode($id),$name_replacement,$id);
+				break;
+
+			case 'org-phones':
+				if (is_numeric($id)) {
+					return $this->fetchInventoryPage($api.'/'.$controller.'/item?id='.$id,$name_replacement);
+				} return 'Поддерживается ссылка только через ID';
+				break;
+
 
 			case 'service':
                 /**
@@ -146,15 +170,6 @@ class syntax_plugin_inventory extends DokuWiki_Syntax_Plugin
 				}
 				break;
 
-			case 'comp':
-			case 'os':
-				if (is_numeric($id)) {
-					return $this->fetchInventoryPage($api.'/comps/item?id='.$id,$name_replacement);
-				} else {
-					return $this->fetchInventoryPage($api.'/comps/item-by-name?name='.$id,$name_replacement);
-				}
-				break;
-
 			case 'tech_model':
 				if (is_numeric($id)) {
 					return $this->fetchInventoryPage($api.'/tech-models/item?id='.$id.'&long=1',$name_replacement);
@@ -173,16 +188,6 @@ class syntax_plugin_inventory extends DokuWiki_Syntax_Plugin
 					return $this->fetchInventoryPage($api.'/techs/item-by-name?name='.urlencode($id),$name_replacement);
 				}
 				break;
-
-			case 'ip':
-				return $this->fetchInventoryPage($api.'/ip/item-by-name?name='.urlencode($id),$name_replacement,$id);
-				break;
-
-			case 'org-phones':
-                if (is_numeric($id)) {
-                    return $this->fetchInventoryPage($api.'/'.$controller.'/item?id='.$id,$name_replacement);
-                } return 'Поддерживается ссылка только через ID';
-                break;
 
             default:
 				return 'ОШИБКА: неизвестный тип объекта';
