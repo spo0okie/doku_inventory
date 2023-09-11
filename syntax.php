@@ -128,7 +128,7 @@ class syntax_plugin_inventory extends DokuWiki_Syntax_Plugin
 				break;
 
 			case 'ip':
-				return $this->fetchInventoryPage($api.'/ip/item-by-name?name='.urlencode($id),$name_replacement,$id);
+				return $this->fetchInventoryPage($api.'/net-ips/item-by-name?name='.urlencode($id),$name_replacement,$id);
 				break;
 
 			case 'net':
