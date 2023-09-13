@@ -94,7 +94,7 @@ class syntax_plugin_inventory extends DokuWiki_Syntax_Plugin
 			$page=str_replace('href="/web','href="'.$api,$page);
 			$page=str_replace('qtip_ajxhrf="/web','qtip_ajxhrf="'.$api,$page);
 			if (!empty($name_replacement)) {
-                $page=preg_replace('/<span class=\'item-name\'>.+<\/span>/',$name_replacement,$page,1);
+                $page=preg_replace('/<span class=\'item-name\'>(?:(?!<\/span>).)*<\/span>/',$name_replacement,$page,1);
             }
 			return $page;
 		}
