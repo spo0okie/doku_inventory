@@ -13,6 +13,8 @@ if (!defined('DOKU_INC')) {
 
 class syntax_plugin_inventory extends DokuWiki_Syntax_Plugin
 {
+
+
     /**
      * @return string Syntax mode type
      */
@@ -55,12 +57,11 @@ class syntax_plugin_inventory extends DokuWiki_Syntax_Plugin
      * @param int          $pos     The position in the document
      * @param Doku_Handler $handler The handler
      *
-     * @return array Data for the renderer
+     * @return string Data for the renderer
      */
     public function handle($match, $state, $pos, Doku_Handler $handler)
     {
-        $data = mb_substr($match,12,-2);
-        return $data;
+        return mb_substr($match,12,-2);
     }
 
 	/**
@@ -88,7 +89,15 @@ class syntax_plugin_inventory extends DokuWiki_Syntax_Plugin
 	private function fetchInventoryPage ($url,$name_replacement=null,$not_found_text=null)
 	{
 		$api=$this->getConf('inventory_url');
-		$page=@file_get_contents($url);
+		$user=$this->getConf('inventory_user');
+		$pass=$this->getConf('inventory_password');
+		$auth = base64_encode("$user:$pass");
+		$context = stream_context_create([
+			"http" => [
+				"header" => "Authorization: Basic $auth"
+			]
+		]);
+		$page=@file_get_contents($url,false,$context);
 		$response=static::parseHeaders($http_response_header);
 		if (isset($response['response_code'])&&($response['response_code']=='200')) {
 			$page=str_replace('href="/web','href="'.$api,$page);

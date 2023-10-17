@@ -5,5 +5,5 @@
  * @author Alexander Reviakin <reviakin@gmail.com>
  */
 
-$conf['inventory_url']    = 'https://inventory.azimuth.holding.local/web';
+$conf['inventory_url']    = 'https://inventory.domain.local/web';
 
