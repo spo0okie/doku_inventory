@@ -113,12 +113,13 @@ class syntax_plugin_inventory extends DokuWiki_Syntax_Plugin
 			$not_found_text; //.$url;
 	}
 
-    /**
-     * Сюда передаем распарсенные данные из синтаксиса
-     * отвечаем уже отрендеренными HTML данными
-     * @param $data
-     * @return false|string|string[]
-     */
+	/**
+	 * Сюда передаем распарсенные данные из синтаксиса
+	 * отвечаем уже отрендеренными HTML данными
+	 * @param $data
+	 * @param string|null $name_replacement
+	 * @return false|string|string[]
+	 */
     private function fetchInventory($data,$name_replacement=null) {
     	//return 'inventory';
 		$controller=$data[0];
