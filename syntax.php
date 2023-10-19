@@ -86,7 +86,7 @@ class syntax_plugin_inventory extends DokuWiki_Syntax_Plugin
 		return $head;
 	}
 
-	private function fetchInventoryPage ($url,$name_replacement=null,$not_found_text=null)
+	private function fetchInventoryPage ($url,$name_replacement=null,$not_found_text=null,$load_ttip=true)
 	{
 		$api=$this->getConf('inventory_url');
 		$user=$this->getConf('inventory_user');
@@ -101,6 +101,16 @@ class syntax_plugin_inventory extends DokuWiki_Syntax_Plugin
 		$response=static::parseHeaders($http_response_header);
 		if (isset($response['response_code'])&&($response['response_code']=='200')) {
 			$page=str_replace('href="/web','href="'.$api,$page);
+			if ($load_ttip) {
+				$matches=[];
+				while (preg_match('/qtip_ajxhrf="\/web([^"]+)"/',$page,$matches)) {
+					//error_log($matches[0]);
+					//error_log($matches[1]);
+					$ttipUrl=$matches[1];
+					$ttipContent=$this->fetchInventoryPage($api.$ttipUrl,null,null,false);
+					$page=str_replace($matches[0],'qtip_b64ttip="'.base64_encode($ttipContent).'"',$page);
+				}
+			}
 			$page=str_replace('qtip_ajxhrf="/web','qtip_ajxhrf="'.$api,$page);
 			if (!empty($name_replacement)) {
                 $page=preg_replace('/<span class=\'item-name\'>(?:(?!<\/span>).)*<\/span>/',$name_replacement,$page,1);
