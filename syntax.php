@@ -95,6 +95,10 @@ class syntax_plugin_inventory extends DokuWiki_Syntax_Plugin
 		$context = stream_context_create([
 			"http" => [
 				"header" => "Authorization: Basic $auth"
+			],
+			"ssl"=>[
+				"verify_peer"=>false,
+				"verify_peer_name"=>false,
 			]
 		]);
 		$page=@file_get_contents($url,false,$context);
