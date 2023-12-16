@@ -1,3 +1,8 @@
+div.inventory_plugin_item.muted,
+span.inventory_plugin_item.muted {
+    opacity: 0.5;
+}
+
 .tooltipster-sidetip.tooltipster-shadow.tooltipster-shadow-yellow .tooltipster-box {
     background: #FFFFA3;
 }
@@ -400,6 +405,31 @@ a.contract_inactive {color: gray; text-decoration: line-through}
 
 
 /* рскрхош */
+.tooltipster-base {
+    height: auto !important;
+}
+.ttip-row {
+    display: table-row;
+    vertical-align: top;
+    padding: 0;
+    margin: 0;
+}
+
+.ttip-preview {
+    width: 100px;
+    display: table-cell;
+    padding-top: 15px;
+    padding-right: 7px;
+    margin: 0;
+}
+
+.ttip-card {
+    display: table-cell;
+    vertical-align: top;
+    min-width: 250px;
+    padding: 0;
+    margin: 0;
+}
 
 .ttip-card h1 {
     font-size: 14px;
@@ -425,9 +455,18 @@ a.contract_inactive {color: gray; text-decoration: line-through}
     margin: 0;
 }
 
+.ttip-card .h4,
 .ttip-card h4 {
     font-size: 11px;
-    font-weight: bold;
+    font-weight: bolder;
+    padding: 0;
+    margin: 0;
+}
+
+.ttip-card .h5,
+.ttip-card h5 {
+    font-size: 11px;
+    font-weight: 550;
     padding: 0;
     margin: 0;
 }
@@ -441,10 +480,8 @@ a.contract_inactive {color: gray; text-decoration: line-through}
     border: none;
 }
 
-
 .qtip-wide {
     width: 500px;
-    overflow: hidden;
 }
 
 

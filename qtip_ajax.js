@@ -202,6 +202,6 @@ function attachAllTTips(){
 
 jQuery(document).ready(function(){
     setTimeout(attachAllTTips,500);
-    console.log("qtiip initialized");
+    console.log("qtip initialized");
     //setInterval(attachAllTTips,500);
 });
