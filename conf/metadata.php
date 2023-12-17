@@ -9,4 +9,5 @@
 $meta['inventory_url'] = array('string');
 $meta['inventory_user'] = array('string');
 $meta['inventory_password'] = array('string');
+$meta['inventory_cache'] = array('string');
 
