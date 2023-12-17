@@ -147,22 +147,28 @@ class inventoryInterface
 				} else {
 					return $this->fetchAndParse($api.'/comps/item-by-name?name='.$id,$data,$name,null,$cache);
 				}
-				break;
 
 			case 'ip':
+			case 'ips':
 				return $this->fetchAndParse($api.'/net-ips/item-by-name?name='.urlencode($id),$data,$name,$id,$cache);
-				break;
 
 			case 'net':
 			case 'network':
 				return $this->fetchAndParse($api.'/networks/item-by-name?name='.urlencode($id),$data,$name,$id,$cache);
-				break;
 
+			case 'org-phone':
 			case 'org-phones':
 				if (is_numeric($id)) {
 					return $this->fetchAndParse($api.'/'.$controller.'/item?id='.$id,$data,$name,null,$cache);
 				} return 'Поддерживается ссылка только через ID';
-				break;
+
+			case 'segment':
+			case 'segments':
+				switch ($method) {
+					case 'list':
+						return $this->fetchAndParse($api.'/segments/list',$data,null,null,$cache);
+					default: return 'ОШИБКА: Неправильный синтаксис ссылки на сегменты';
+				}
 
 			case 'service':
 				switch ($method) {
@@ -175,7 +181,6 @@ class inventoryInterface
 						break;
 					default: return 'ОШИБКА: Неизвестный элемент сервиса';
 				}
-				break;
 
 			case 'user':
 				if (is_numeric($id)) {
@@ -185,7 +190,6 @@ class inventoryInterface
 				} else {
 					return $this->fetchAndParse($api.'/users/item-by-name?name='.urlencode($id),$data,$name,null,$cache);
 				}
-				break;
 
 			case 'tech_model':
 				if (is_numeric($id)) {
@@ -195,7 +199,6 @@ class inventoryInterface
 					if (count($tokens)!=2) return 'ОШИБКА: не удалось определить производителя/модель';
 					return $this->fetchAndParse($api.'/tech-models/item-by-name?name='.urlencode($tokens[1]).'&manufacturer='.urlencode($tokens[0]).'&long=1',$data,$name,null,$cache);
 				}
-				break;
 
 			case 'tech':
 				if (is_numeric($id)) {
@@ -203,7 +206,6 @@ class inventoryInterface
 				} else {
 					return $this->fetchAndParse($api.'/techs/item-by-name?name='.urlencode($id),$data,$name,null,$cache);
 				}
-				break;
 
 			default:
 				return 'ОШИБКА: неизвестный тип объекта';
