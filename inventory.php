@@ -25,44 +25,23 @@ class inventoryInterface
 		$this->cache=$cache;
 	}
 
-	/**
-	 * Разбирается с каким кодом вернулась страничка с запроса
-	 */
-	private static function parseHeaders( $headers )
-	{
-		//упер отсель https://www.php.net/manual/ru/reserved.variables.httpresponseheader.php
-		$head = array();
-		foreach( $headers as $k=>$v )
-		{
-			$t = explode( ':', $v, 2 );
-			if( isset( $t[1] ) )
-				$head[ trim($t[0]) ] = trim( $t[1] );
-			else
-			{
-				$head[] = $v;
-				if( preg_match( "#HTTP/[0-9\.]+\s+([0-9]+)#",$v, $out ) )
-					$head['response_code'] = intval($out[1]);
-			}
-		}
-		return $head;
-	}
-
 	private function fetchPage ($url,$load_ttip=true)
 	{
 		$api=$this->api;
 		$user=$this->user;
 		$pass=$this->pass;
 		$cache=$this->cache;
-		$auth = base64_encode("$user:$pass");
-		$context = stream_context_create([
-			"http" => [
-				"header" => "Authorization: Basic $auth"
-			]
-		]);
-		$page=@file_get_contents($url,false,$context);
+		$ch=curl_init($url);
+		curl_setopt($ch, CURLOPT_USERPWD, $user . ":" . $pass); 
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		$page=@curl_exec($ch);
+		// Check if any error occurred
+		if (!curl_errno($ch)) {
+			$this->response=curl_getinfo($ch);
+		}
+		//echo $page;
 		$this->page=$page;
-		$this->response=static::parseHeaders($http_response_header);
-		if (isset($this->response['response_code'])&&($this->response['response_code']=='200')) {
+		if (isset($this->response['http_code'])&&($this->response['http_code']==200)) {
 			$page=str_replace('href="/web','href="'.$api,$page);
 			$page=str_replace('src="/web','src="'.$api,$page);
 			if ($load_ttip) {
@@ -83,7 +62,7 @@ class inventoryInterface
 	public function parsePage ($page,$name_replacement=null,$not_found_text=null)
 	{
 		if (is_null($page)) return is_null($not_found_text)?
-			'ОШИБКА: объект не найден в инвентаризации: '.$this->response['response_code']:
+			'ОШИБКА: объект не найден в инвентаризации: '.$this->response['http_code']:
 			$not_found_text; //.$this->response['response_code'].$this->page;
 		if (!empty($name_replacement)) {
 			$page=preg_replace('/<span class=\'item-name\'>(?:(?!<\/span>).)*<\/span>/',$name_replacement,$page,1);
@@ -167,7 +146,7 @@ class inventoryInterface
 				switch ($method) {
 					case 'list':
 						return $this->fetchAndParse($api.'/segments/list',$data,null,null,$cache);
-					default: return 'ОШИБКА: Неправильный синтаксис ссылки на сегменты';
+					default: return 'ОШИБКА: Неправильный синтаксис ссылки на сегменты '.$method;
 				}
 
 			case 'service':
