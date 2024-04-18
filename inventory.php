@@ -65,7 +65,7 @@ class inventoryInterface
 			'ОШИБКА: объект не найден в инвентаризации: '.$this->response['http_code']:
 			$not_found_text; //.$this->response['response_code'].$this->page;
 		if (!empty($name_replacement)) {
-			$page=preg_replace('/<span class=\'item-name\'>(?:(?!<\/span>).)*<\/span>/',$name_replacement,$page,1);
+			$page=preg_replace('/<span class=[\'"]item-name[\'"]>(?:(?!<\/span>).)*<\/span>/',$name_replacement,$page,1);
 		}
 		return $page;
 	}
@@ -98,6 +98,7 @@ class inventoryInterface
 	 * @param $name - имя домены
 	 * @param $empty - текст для отсутствия страницы
 	 * @param $cache - можно взять из кэша
+	 * @return mixed|string|string[]|null
 	 */
 	public function fetchAndParse($url,$data,$name=null,$empty=null,$cache=true)
 	{
@@ -111,6 +112,7 @@ class inventoryInterface
 	 * отвечаем уже отрендеренными HTML данными
 	 * @param $data
 	 * @param string|null $name замена имени в элементе
+	 * @param bool $cache
 	 * @return false|string|string[]
 	 */
 	public function fetchInventory($data,$name=null,$cache=true) {
@@ -153,11 +155,9 @@ class inventoryInterface
 				switch ($method) {
 					case 'support':
 						return $this->fetchAndParse($api.'/services/card-support?id='.$id,$data,null,null,$cache);
-						break;
 					case 'item':
 						if (empty($id)) return '<a href="'.$api.'/services/">Укажите номер сервиса в инвентаризации</a>' ;
 						return $this->fetchAndParse($api.'/services/'.$method.'?id='.$id,$data,$name,null,$cache);
-						break;
 					default: return 'ОШИБКА: Неизвестный элемент сервиса';
 				}
 
