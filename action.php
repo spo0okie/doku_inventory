@@ -21,7 +21,6 @@ class action_plugin_inventory extends DokuWiki_Action_Plugin
     public function register(Doku_Event_Handler $controller)
     {
         $controller->register_hook('AJAX_CALL_UNKNOWN', 'BEFORE', $this, 'hook');
-		error_log('hi');
     }
 
     /**
@@ -32,7 +31,7 @@ class action_plugin_inventory extends DokuWiki_Action_Plugin
     {
 
         if ($event->data !== self::getPluginName()) {
-            //return;
+            return;
         }
 
         //no other ajax call handlers needed

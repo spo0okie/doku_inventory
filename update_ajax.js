@@ -1,11 +1,11 @@
-
+//syntax fixed
 function update_inventory_item(el)
 {
     if (!el.hasClass('muted')) {
         return;
     }
     let data=el.attr('data-update');
-    let url='/lib/exe/ajax.php?call=inventpry&action=parse&data='+data;
+    let url='/lib/exe/ajax.php?call=inventory&action=parse&data='+data;
     jQuery.get(url, function(data) {
         el.removeClass("muted").html(data);
         //el.children("span.object-item").each(function(){update_inventory_item(jQuery(this));});
