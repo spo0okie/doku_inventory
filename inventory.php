@@ -48,8 +48,9 @@ class inventoryInterface
 				$matches=[];
 				while (preg_match('/qtip_ajxhrf="\/web([^"]+)"/',$page,$matches)) {
 					$ttipUrl=$matches[1];
-					$ttipContent=$this->fetchPage($api.$ttipUrl,false);
-					$page=str_replace($matches[0],'qtip_b64ttip="'.base64_encode($ttipContent).'"',$page);
+					$ttipReplace='qtip_ajxhrf="/lib/exe/ajax.php?call=inventory&action=ttip&data='.urlencode($ttipUrl).'"';
+					//$ttipContent=$this->fetchPage($api.$ttipUrl,false);
+					$page=str_replace($matches[0],$ttipReplace,$page);
 				}
 			}
 			$page=str_replace('qtip_ajxhrf="/web','qtip_ajxhrf="'.$api,$page);
@@ -57,6 +58,10 @@ class inventoryInterface
 		}
 		return null;
 	}
+
+	public function fetchTtip($ttipUrl) {
+	    return $this->fetchPage($this->api.$ttipUrl);
+    }
 
 
 	public function parsePage ($page,$name_replacement=null,$not_found_text=null)

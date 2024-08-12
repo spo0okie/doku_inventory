@@ -1,6 +1,7 @@
 <?php
 /**
  * DokuWiki Plugin inventory (Action Component)
+ * Обработчик AJAX запросов
  *
  * @license GPL 2 http://www.gnu.org/licenses/gpl-2.0.html
  * @author  Alexander Reviakin <reviakin@gmail.com>
@@ -69,6 +70,23 @@ class action_plugin_inventory extends DokuWiki_Action_Plugin
 
 				echo $inventory->fetchInventory($parsed[0],$parsed[1],false);
 				return;
+
+            case 'ttip':
+                $data = urldecode($INPUT->str('data'));
+                if ($data == '') {
+                    http_response_code(400);
+                    echo 'No data requested';
+                    return;
+                }
+                $inventory=new inventoryInterface(
+                    $this->getConf('inventory_url'),
+                    $this->getConf('inventory_user'),
+                    $this->getConf('inventory_password'),
+                    $this->getConf('inventory_cache')
+                );
+
+                echo $inventory->fetchTtip($data);
+                return;
 
             default:
                 http_response_code(404);
