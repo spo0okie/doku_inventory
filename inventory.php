@@ -77,7 +77,7 @@ class inventoryInterface
 
 	public function cacheFile($data)
 	{
-		return str_replace('/','_',$this->cache).'/'.$data;;
+		return $this->cache.'/'.str_replace('/','_',$data);
 	}
 
 	public function cacheOrFetch($url,$data)
