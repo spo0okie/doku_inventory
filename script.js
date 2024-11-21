@@ -9,5 +9,6 @@
 ;
 /* DOKUWIKI:include update_ajax.js */
 ;
-
-console.log("doku_inventory v2.3"); //build 10
+/* DOKUWIKI:include switch.js */
+;
+//console.log("doku_inventory v2.3"); //build 10

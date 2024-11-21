@@ -512,7 +512,7 @@ ul.ul-dropfree div.drop {
     cursor:pointer;
 }
 
-/* РАСКРАСКА СЕГМЕНТОВ СЕТИ */
+/* РАСКРАСКА СЕГМЕНТОВ СЕТ�? */
 span.segment_open {background-color: lightgreen; border-radius: 7px}
 div.arms-card div span.segment_open {background-color: seagreen;}
 
@@ -561,3 +561,45 @@ span.segment_mgmt {background: repeating-linear-gradient(
     #e3e3e3 4px,
     #e3e3e3 8px
 );}
+
+/* expandable card js */
+.expandable-card-outer {
+    position: relative;
+}
+
+.expandable-card-outer.compressed .expandable-card-content.oversize{
+    overflow-y: hidden;
+    overflow-x: hidden;
+    mask-image: linear-gradient(rgba(0, 0, 0, 1), transparent);
+    -webkit-mask-image: -webkit-gradient(linear, left 80%, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)));
+}
+
+.expandable-card-outer.line-break .expandable-card-content span.object-item{
+    display: block;
+}
+
+.expandable-card-switch {
+    bottom: 0;
+    position: absolute;
+    padding:0; margin:0; border:0;
+    width:100%;
+    height: 7px;
+    text-align: center;
+    vertical-align: bottom;
+    color: inherit;
+    z-index: 999;
+}
+
+.expandable-card-switch svg {
+    height: 100%;
+    display: block;
+    position: static;
+    margin: auto;
+    opacity: 30%;
+}
+
+.expandable-card-outer.compressed:hover .expandable-card-switch svg{
+    opacity: 45%;
+}
+
+.expandable-card-outer:hover {background-color:rgba(0, 0, 0, 0.02);}
