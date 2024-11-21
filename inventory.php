@@ -77,7 +77,7 @@ class inventoryInterface
 
 	public function cacheFile($data)
 	{
-		return str_replace('/','_',$this->cache).'/'.$data;;
+		return str_replace('/','_',$this->cache).'/'.$data;
 	}
 
 	public function cacheOrFetch($url,$data)
@@ -160,6 +160,9 @@ class inventoryInterface
 				switch ($method) {
 					case 'support':
 						return $this->fetchAndParse($api.'/services/card-support?id='.$id,$data,null,null,$cache);
+                    case 'maintenance-req':
+                    case 'maintenance-reqs':
+                        return $this->fetchAndParse($api.'/services/card-maintenance-reqs?id='.$id,$data,null,null,$cache);
 					case 'item':
 						if (empty($id)) return '<a href="'.$api.'/services/">Укажите номер сервиса в инвентаризации</a>' ;
 						return $this->fetchAndParse($api.'/services/'.$method.'?id='.$id,$data,$name,null,$cache);
