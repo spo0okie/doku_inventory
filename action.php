@@ -45,11 +45,11 @@ class action_plugin_inventory extends DokuWiki_Action_Plugin
         global $INPUT;
         $action = $INPUT->str('action');
 
-		$output='no output';
+        $output='no output';
 
         switch ($action) {
             case 'parse':
-                $data = urldecode($INPUT->str('data'));
+                $data = $INPUT->str('data');
                 if ($data == '') {
                     http_response_code(400);
                     echo 'No data requested';
