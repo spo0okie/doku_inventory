@@ -13,7 +13,7 @@ function ExpandableCardOversizeCheck($card) {
                 '</span>');
             if ($card.hasClass('switch-only-on-button'))
                 $toggle.on('click',function (){
-                        ExpandableCardSwitch($card);
+                    ExpandableCardSwitch($card);
                 });
 
             $card.prepend($toggle);
@@ -50,12 +50,21 @@ function ExpandableCardInit (card) {
                     $needHandleClick=false;
                 $target=$target.parent();
             } while (               //пока
+<<<<<<< HEAD
                 $needHandleClick    //мы не поняли что обрабатывать не надо
                 &&                  //и
                 $target.length
                 &&
                 !$target.hasClass('expandable-card-content')    //мы не добрались до нашего DIV
             );
+=======
+            $needHandleClick    //мы не поняли что обрабатывать не надо
+            &&                  //и
+            $target.length
+            &&
+            !$target.hasClass('expandable-card-content')    //мы не добрались до нашего DIV
+                );
+>>>>>>> bfb0d26c7face1ccaa801a82c90e6b864eda76af
             //если клик не обработан - обрабатываем
             if ($needHandleClick) ExpandableCardSwitch($card);
         });

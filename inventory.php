@@ -190,14 +190,17 @@ class inventoryInterface
 					return $this->fetchAndParse($api.'/tech-models/item-by-name?name='.urlencode($tokens[1]).'&manufacturer='.urlencode($tokens[0]).'&long=1',$data,$name,null,$cache);
 				}
 
-			case 'tech':
-				if (is_numeric($id)) {
-					return $this->fetchAndParse($api.'/techs/item?id='.$id,$data,$name,null,$cache);
-				} else {
-					return $this->fetchAndParse($api.'/techs/item-by-name?name='.urlencode($id),$data,$name,null,$cache);
-				}
+            case 'tech':
+                if (is_numeric($id)) {
+                    return $this->fetchAndParse($api.'/techs/item?id='.$id,$data,$name,null,$cache);
+                } else {
+                    return $this->fetchAndParse($api.'/techs/item-by-name?name='.urlencode($id),$data,$name,null,$cache);
+                }
 
-			default:
+            case 'maintenance_reqs':
+                return $this->fetchAndParse($api.'/maintenance-reqs/list',$data,$name,null,$cache);
+
+            default:
 				return 'ОШИБКА: неизвестный тип объекта';
 		}
 	}
