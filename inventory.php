@@ -77,13 +77,16 @@ class inventoryInterface
 
 	public function cacheFile($data)
 	{
+		//error_log($this->cache.'/'.str_replace('/','_',$data));
 		return $this->cache.'/'.str_replace('/','_',$data);
 	}
 
 	public function cacheOrFetch($url,$data)
 	{
 		$cache=$this->cacheFile($data);
+		error_log($cache);
 		if (file_exists($cache)) return file_get_contents($cache);
+		error_log("missing($cache)");
 		return $this->fetchAndCache($url,$data);
 	}
 

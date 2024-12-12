@@ -1,4 +1,6 @@
 ;
+/* DOKUWIKI:include switch.js */
+;
 /* DOKUWIKI:include tooltipster.main.min.js */
 ;
 /* DOKUWIKI:include tooltipster.bundle.min.js */
@@ -9,6 +11,4 @@
 ;
 /* DOKUWIKI:include update_ajax.js */
 ;
-/* DOKUWIKI:include switch.js */
-;
-//console.log("doku_inventory v2.3"); //build 10
+//console.log("doku_inventory v2.5"); //build 14
