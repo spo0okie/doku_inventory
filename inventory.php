@@ -198,7 +198,13 @@ class inventoryInterface
                 }
 
             case 'maintenance_reqs':
-                return $this->fetchAndParse($api.'/maintenance-reqs/list',$data,$name,null,$cache);
+                if (empty($id)) {
+                    return $this->fetchAndParse($api.'/maintenance-reqs/list',$data,$name,null,$cache);
+                } else if (is_numeric($id)) {
+                    return $this->fetchAndParse($api.'/maintenance-reqs/item?id='.$id,$data,$name,null,$cache);
+                } else {
+                    return $this->fetchAndParse($api.'/maintenance-reqs/item-by-name?name='.urlencode($id),$data,$name,null,$cache);
+                }
 
             default:
 				return 'ОШИБКА: неизвестный тип объекта';
