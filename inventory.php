@@ -198,6 +198,7 @@ class inventoryInterface
                 }
 
             case 'maintenance_reqs':
+            case 'maintenance_req':
                 if (empty($id)) {
                     return $this->fetchAndParse($api.'/maintenance-reqs/list',$data,$name,null,$cache);
                 } else if (is_numeric($id)) {
