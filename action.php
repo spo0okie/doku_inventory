@@ -106,6 +106,7 @@ class action_plugin_inventory extends DokuWiki_Action_Plugin
 
                 header('Content-Type: text/html');
                 echo $html;
+                return;
 
             //загрузка секции страницы
             case 'render':
@@ -122,6 +123,7 @@ class action_plugin_inventory extends DokuWiki_Action_Plugin
 
                 header('Content-Type: text/html');
                 echo $html;
+                return;
 
             default:
                 http_response_code(404);
