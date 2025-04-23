@@ -39,15 +39,17 @@ class action_plugin_inventory extends DokuWiki_Action_Plugin
         $event->stopPropagation();
         $event->preventDefault();
 
-        global $conf;
-        $response_code = 200;
+        //global $conf;
+        //$response_code = 200;
 
         global $INPUT;
         $action = $INPUT->str('action');
 
-        $output='no output';
+        $info='temporary';
 
         switch ($action) {
+            //Асинхронный парсинг синтаксических вставок
+            //чтобы при рендере страницы быстрее отдавать результат из кэша, а обновлять данные в фоне
             case 'parse':
                 $data = $INPUT->str('data');
                 if ($data == '') {
@@ -71,6 +73,7 @@ class action_plugin_inventory extends DokuWiki_Action_Plugin
 				echo $inventory->fetchInventory($parsed[0],$parsed[1],false);
 				return;
 
+            //подгрузка данных инвентори для тултипа
             case 'ttip':
                 $data = urldecode($INPUT->str('data'));
                 if ($data == '') {
@@ -87,6 +90,38 @@ class action_plugin_inventory extends DokuWiki_Action_Plugin
 
                 echo $inventory->fetchTtip($data);
                 return;
+
+            //загрузка секции страницы
+            case 'page':
+                $page = $INPUT->str('page');
+
+                if (!page_exists($page)) {
+                    http_response_code(404);
+                    echo "Page not found";
+                    return;
+                }
+                $section = $INPUT->str('section');
+                $instructions = p_get_instructions("{{page>$page#$section}}");
+                $html = p_render('xhtml', $instructions, $info);
+
+                header('Content-Type: text/html');
+                echo $html;
+
+            //загрузка секции страницы
+            case 'render':
+                $code = file_get_contents('php://input');
+
+                if (empty($wikitext)) {
+                    http_response_code(400);
+                    echo "Error: No code provided";
+                    return;
+                }
+
+                $instructions = p_get_instructions($code);
+                $html = p_render('xhtml', $instructions, $info);
+
+                header('Content-Type: text/html');
+                echo $html;
 
             default:
                 http_response_code(404);

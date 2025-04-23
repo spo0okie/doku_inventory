@@ -25,6 +25,13 @@ class inventoryInterface
 		$this->cache=$cache;
 	}
 
+    /**
+     * Загрузить страницу
+     * Подменяет ссылки инвентори на саму себя внутри станицы на внешние
+     * @param $url
+     * @param $load_ttip
+     * @return array|bool|string|string[]|null
+     */
 	private function fetchPage ($url,$load_ttip=true)
 	{
 		$api=$this->api;
