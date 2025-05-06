@@ -22,6 +22,8 @@ class action_plugin_inventory extends DokuWiki_Action_Plugin
     public function register(Doku_Event_Handler $controller)
     {
         $controller->register_hook('AJAX_CALL_UNKNOWN', 'BEFORE', $this, 'hook');
+        $controller->register_hook('COMMON_WIKIPAGE_SAVE', 'AFTER', $this, 'sendInvalidate');
+        $controller->register_hook('COMMON_WIKIPAGE_DELETE', 'AFTER', $this, 'sendInvalidate');
     }
 
     /**
@@ -129,5 +131,26 @@ class action_plugin_inventory extends DokuWiki_Action_Plugin
                 http_response_code(404);
                 echo 'Unknown action: '.$action;
         }
+    }
+
+    /**
+     * В случае редактирования страницы отправляет в инвентори API запрос на инвалидацию кэша
+     * этой страницы и всех рендеров которые ее включают
+     * @param Doku_Event $event
+     * @param $param
+     * @return void
+     */
+    public function sendInvalidate(Doku_Event $event, $param) {
+        $page = $event->data['id']; // Имя изменённой страницы (например, "somepage")
+
+        $inventory=new inventoryInterface(
+            $this->getConf('inventory_url'),
+            $this->getConf('inventory_user'),
+            $this->getConf('inventory_password'),
+            $this->getConf('inventory_cache')
+        );
+
+        $inventory->curlGet($inventory->api.'/wiki/invalidate-page?pageName='.$page);
+
     }
 }

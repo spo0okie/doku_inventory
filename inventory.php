@@ -25,6 +25,17 @@ class inventoryInterface
 		$this->cache=$cache;
 	}
 
+    public function curlGet($url)
+    {
+        $ch=curl_init($url);
+        curl_setopt($ch, CURLOPT_USERPWD, $this->user . ":" . $this->pass);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $body=@curl_exec($ch);
+        if (!curl_errno($ch)) {
+            $this->response=curl_getinfo($ch);
+        }
+        return $body;
+    }
     /**
      * Загрузить страницу
      * Подменяет ссылки инвентори на саму себя внутри станицы на внешние
@@ -34,19 +45,9 @@ class inventoryInterface
      */
 	private function fetchPage ($url,$load_ttip=true)
 	{
-		$api=$this->api;
-		$user=$this->user;
-		$pass=$this->pass;
-		$cache=$this->cache;
-		$ch=curl_init($url);
-		curl_setopt($ch, CURLOPT_USERPWD, $user . ":" . $pass); 
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		$page=@curl_exec($ch);
+		$page=$this->curlGet($url);
+        $api=$this->api;
 		// Check if any error occurred
-		if (!curl_errno($ch)) {
-			$this->response=curl_getinfo($ch);
-		}
-		//echo $page;
 		$this->page=$page;
 		if (isset($this->response['http_code'])&&($this->response['http_code']==200)) {
 			$page=str_replace('href="/web','href="'.$api,$page);
