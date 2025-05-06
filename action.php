@@ -114,7 +114,7 @@ class action_plugin_inventory extends DokuWiki_Action_Plugin
             case 'render':
                 $code = file_get_contents('php://input');
 
-                if (empty($wikitext)) {
+                if (empty($code)) {
                     http_response_code(400);
                     echo "Error: No code provided";
                     return;
