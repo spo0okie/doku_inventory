@@ -50,11 +50,11 @@ function ExpandableCardInit (card) {
                     $needHandleClick=false;
                 $target=$target.parent();
             } while (               //пока
-                $needHandleClick    //мы не поняли что обрабатывать не надо
-                &&                  //и
-                $target.length
-                &&
-                !$target.hasClass('expandable-card-content')    //мы не добрались до нашего DIV
+            	$needHandleClick    //мы не поняли что обрабатывать не надо
+             	&&                  //и
+              $target.length
+              &&
+              !$target.hasClass('expandable-card-content')    //мы не добрались до нашего DIV
             );
             //если клик не обработан - обрабатываем
             if ($needHandleClick) ExpandableCardSwitch($card);

@@ -1,7 +1,7 @@
 base   inventory
 author Alexander Reviakin
 email  reviakin@gmail.com
-date   2022-04-26
+date   2026-07-23
 name   inventory plugin
 desc   Integrating with spookie invetory
 url    https://github.com/spo0okie/doku_inventory

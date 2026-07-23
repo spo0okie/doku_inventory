@@ -5,6 +5,13 @@ Integrating with spookie invetory
 All documentation for this plugin can be found at
 https://github.com/spo0okie/doku_inventory
 
+Assets (CSS/JS) are synced from the ARMS repository:
+  ./sync_assets.sh [path_to_arms]   # default ../arms
+style.css is GENERATED (arms css files + style.local.css) - edit
+style.local.css for plugin-local rules/overrides, never style.css.
+tooltipster.bundle.js carries ARMS LOCAL PATCHes (tooltip sizing fixes)
+required by qtip_ajax.js - always update them together via sync_assets.sh.
+
 If you install this plugin manually, make sure it is installed in
 lib/plugins/inventory/ - if the folder is called different it
 will not work!

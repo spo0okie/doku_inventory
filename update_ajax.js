@@ -22,6 +22,6 @@ function update_all_inventory_items()
 };
 
 jQuery(document).ready(function(){
-    setTimeout(update_all_inventory_items(),500);
+    setTimeout(update_all_inventory_items,500);
     console.log("inventory async initialized");
 });
