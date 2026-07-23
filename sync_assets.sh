@@ -37,8 +37,12 @@ ARMS="${1:-../arms}"
 	cat style.local.css
 } > style.css
 
-cp "$ARMS/web/tooltipster/js/tooltipster.main.js"   tooltipster.main.js
-cp "$ARMS/web/tooltipster/js/tooltipster.bundle.js" tooltipster.bundle.js
+# Суффикс .min.js — намеренно: js.php DokuWiki прогоняет плагинные скрипты
+# через свой компрессор, КРОМЕ *.min.js. Его минификатор может поломать
+# нетривиальный код tooltipster, поэтому отдаём файлы как есть, без сжатия.
+banner='/* Файл НЕ минифицирован: суффикс .min.js отключает компрессор DokuWiki (см. sync_assets.sh) */'
+{ echo "$banner"; cat "$ARMS/web/tooltipster/js/tooltipster.main.js";   } > tooltipster.main.min.js
+{ echo "$banner"; cat "$ARMS/web/tooltipster/js/tooltipster.bundle.js"; } > tooltipster.bundle.min.js
 cp "$ARMS/web/tooltipster/js/qtip_ajax.js"          qtip_ajax.js
 cp "$ARMS/components/assets/ExpandableCardWidgetAsset/js/switch.js" switch.js
 
